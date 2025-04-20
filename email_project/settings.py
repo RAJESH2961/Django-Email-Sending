@@ -147,3 +147,13 @@ EMAIL_PORT = 587
 
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # pulled from .env
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # pulled from .env
+
+
+#for contact form there will be manu admins 
+# settings.py
+# ADMINS = ['grajesh2907@gmail.com', 'rajesh2961@gmail.com']
+
+#Using .env
+ADMINS = env.list("ADMINS", default=["grajesh2906@gmail.com"])
+
+
