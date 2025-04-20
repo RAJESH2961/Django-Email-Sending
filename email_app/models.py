@@ -1,5 +1,7 @@
 from django.db import models
 
+
+#models to stored data in database
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
