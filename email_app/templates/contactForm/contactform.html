@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Contact Us</title>
-</head>
-<body>
-    <h2>Contact Form</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Send</button>
-    </form>
-</body>
-</html>
+<!-- contactform.html -->
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div>
+      {{ form.name.label_tag }} {{ form.name }}
+    </div>
+    <div>
+      {{ form.subject.label_tag }} {{ form.subject }}
+    </div>
+    <div>
+      {{ form.email.label_tag }} {{ form.email }}
+    </div>
+    <div>
+      {{ form.message.label_tag }} {{ form.message }}
+    </div>
+    
+    <!-- Honeypot field (invisible to humans, visible to bots) -->
+    <div style="display:none;">
+      {{ form.honeypot.label_tag }} {{ form.honeypot }}
+    </div>
+  
+    <button type="submit">Send</button>
+  </form>
+  
