@@ -122,3 +122,28 @@ STATIC_URL = '/static/'
 
 
 
+#Email part
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+""" Less Security if we use it in settings to store credentials"""
+#EMAIL_HOST_USER = "grajesh2906@gmail.com"
+#EMAIL_HOST_PASSWORD = "mflvyunqecgblaby"
+
+#  to solve this use .env file in the same root directory and store the passwords and import where ever we required
+
+import environ
+import os
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Make sure BASE_DIR is defined
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # pulled from .env
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # pulled from .env
