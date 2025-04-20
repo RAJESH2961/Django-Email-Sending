@@ -216,13 +216,19 @@ from django.conf import settings
 from .forms import ContactForm
 from .models import ContactMessage  # Import your model
 
+from django.shortcuts import render
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .forms import ContactForm
+from .models import ContactMessage  # Ensure this model exists
+
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Get data
+            # Get cleaned data
             name = form.cleaned_data['name']
-            subject = form.cleaned_data['subject']
+            subject = form.cleaned_data.get('subject', 'Contact Form Submission')
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
 
@@ -234,7 +240,7 @@ def contact_view(request):
                 message=message
             )
 
-            # Create full message
+            # Compose full message
             full_message = f"Message from {name} <{email}>:\n\n{message}"
 
             # Send email
@@ -242,14 +248,14 @@ def contact_view(request):
                 subject=subject,
                 body=full_message,
                 from_email=settings.EMAIL_HOST_USER,
-                to=[admin[1] for admin in settings.ADMINS],  # Use just email part of ADMINS
+                to=[admin[1] for admin in settings.ADMINS],  # Only the email from each tuple
                 cc=['gbharathi32561@gmail.com'],
                 bcc=['162411510201@apollouniversity.edu.in'],
                 reply_to=[email],
             )
             email_message.send(fail_silently=False)
 
-            return render(request, 'contactForm/contact_success.html')
+            return render(request, 'contactForm/contact_success.html')  # success page
     else:
         form = ContactForm()
 

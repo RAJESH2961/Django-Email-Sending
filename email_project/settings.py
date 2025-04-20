@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'email_app',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -161,4 +162,15 @@ ADMINS = [
     ("Admin1", "grajesh2906@gmail.com"),
     ("Admin2", "grajesh2907@gmail.com"),
 ]
+
+
+#captcha
+# settings.py
+import environ
+
+env = environ.Env()
+environ.Env.read_env()  # Reading .env file
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+
 
