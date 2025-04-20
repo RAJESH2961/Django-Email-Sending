@@ -173,3 +173,37 @@ def send_simple_email(request):
     email.send()
 
     return HttpResponse("✅ Email with attachment sent successfully!")
+
+
+
+
+#Forms logic 
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ContactForm
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            subject = form.cleaned_data['subject']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            full_message = f"Message from {name} <{email}>:\n\n{message}"
+
+            send_mail(
+                subject,
+                full_message,
+                settings.EMAIL_HOST_USER,#sender
+                settings.ADMINS,#Receiver admins 2 members
+                fail_silently=False,
+            )
+
+            return render(request, 'contactForm/contact_success.html')  # optional
+    else:
+        form = ContactForm()
+
+    return render(request, 'contactForm/contactform.html', {'form': form})
