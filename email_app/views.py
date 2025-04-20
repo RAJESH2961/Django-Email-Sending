@@ -48,3 +48,128 @@ def send_simple_email(request):
 
     send_mass_mail((email1, email2, email3), fail_silently=False)
     return HttpResponse("✅ All the emails have been sent successfully!")
+
+
+#Send email in HTML form with an attachment
+
+from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponse
+from django.conf import settings
+
+def send_simple_email(request):
+    subject = "🎉 Welcome to DjangoPro - Unlock Your Full Potential!"
+    from_email = settings.EMAIL_HOST_USER
+    to_email = ['grajesh2906@gmail.com', 'grajesh2907@gmail.com', 'grajesh2961@gmail.com']
+
+    text_content = "Hi Rajesh,\nWelcome to DjangoPro! Explore features, connect, and grow.\nVisit: https://yourdomain.com"
+
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f4f4f4;
+                padding: 20px;
+                color: #333;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #fff;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            .logo {
+                text-align: center;
+            }
+            .logo img {
+                height: 60px;
+            }
+            h1 {
+                color: #2E86C1;
+            }
+            .btn {
+                display: inline-block;
+                padding: 12px 20px;
+                background-color: #2E86C1;
+                color: #fff;
+                border-radius: 5px;
+                text-decoration: none;
+                margin-top: 20px;
+            }
+            .footer {
+                margin-top: 30px;
+                font-size: 12px;
+                color: #888;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Django_logo.svg" alt="Logo">
+            </div>
+            <h1>Welcome, Rajesh! 🎉</h1>
+            <p>Thanks for joining <b>DjangoPro</b> — a powerful platform to learn, build, and grow with Django!</p>
+            <p>Here's what you can do right now:</p>
+            <ul>
+                <li>🔍 Explore our features</li>
+                <li>👤 Customize your profile</li>
+                <li>🤝 Connect with the community</li>
+            </ul>
+            <p>
+                <a href="https://yourdomain.com/dashboard" class="btn">Visit Your Dashboard</a>
+            </p>
+            <div class="footer">
+                You're receiving this email because you registered at DjangoPro.<br>
+                © 2025 DjangoPro Inc. | <a href="#">Unsubscribe</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+    return HttpResponse("✅ Advanced HTML email sent successfully!")
+
+
+from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponse
+from django.conf import settings
+import os
+
+def send_simple_email(request):
+    subject = "📎 Your File is Attached!"
+    from_email = settings.EMAIL_HOST_USER
+    to_email = ['grajesh2906@gmail.com']
+    text_content = "Hello! Please find the attached file below."
+
+    html_content = """
+    <html>
+    <body>
+        <h2>Hi Rajesh 👋,</h2>
+        <p>Please find the document attached below.</p>
+        <p>Best regards,<br><strong>Django Team</strong></p>
+    </body>
+    </html>
+    """
+
+    # Create email
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+
+    # Path to file (make sure it's readable)
+    file_path = os.path.join(settings.BASE_DIR, 'files/rajesh2906.pdf')  # e.g., store in /files/ folder
+    email.attach_file(file_path)  # Attaches any file
+
+    # Send it
+    email.send()
+
+    return HttpResponse("✅ Email with attachment sent successfully!")
