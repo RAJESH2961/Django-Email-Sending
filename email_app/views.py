@@ -207,3 +207,50 @@ def contact_view(request):
         form = ContactForm()
 
     return render(request, 'contactForm/contactform.html', {'form': form})
+
+
+#storing the form data in database also adding CC and BCC
+from django.shortcuts import render
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .forms import ContactForm
+from .models import ContactMessage  # Import your model
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Get data
+            name = form.cleaned_data['name']
+            subject = form.cleaned_data['subject']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            # Save to DB
+            ContactMessage.objects.create(
+                name=name,
+                subject=subject,
+                email=email,
+                message=message
+            )
+
+            # Create full message
+            full_message = f"Message from {name} <{email}>:\n\n{message}"
+
+            # Send email
+            email_message = EmailMessage(
+                subject=subject,
+                body=full_message,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[admin[1] for admin in settings.ADMINS],  # Use just email part of ADMINS
+                cc=['gbharathi32561@gmail.com'],
+                bcc=['162411510201@apollouniversity.edu.in'],
+                reply_to=[email],
+            )
+            email_message.send(fail_silently=False)
+
+            return render(request, 'contactForm/contact_success.html')
+    else:
+        form = ContactForm()
+
+    return render(request, 'contactForm/contactform.html', {'form': form})

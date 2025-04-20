@@ -153,7 +153,12 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # pulled from .env
 # settings.py
 # ADMINS = ['grajesh2907@gmail.com', 'rajesh2961@gmail.com']
 
-#Using .env
+#Using .env we are fetching 
 ADMINS = env.list("ADMINS", default=["grajesh2906@gmail.com"])
 
+#this method is to iterate throught loop
+ADMINS = [
+    ("Admin1", "grajesh2906@gmail.com"),
+    ("Admin2", "grajesh2907@gmail.com"),
+]
 
