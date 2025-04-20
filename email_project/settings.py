@@ -156,7 +156,7 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # pulled from .env
 #Using .env we are fetching 
 ADMINS = env.list("ADMINS", default=["grajesh2906@gmail.com"])
 
-#this method is to iterate throught loop
+#this method is to iterate throught loop see code in views.pt for CC and BCC
 ADMINS = [
     ("Admin1", "grajesh2906@gmail.com"),
     ("Admin2", "grajesh2907@gmail.com"),
